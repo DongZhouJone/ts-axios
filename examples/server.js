@@ -34,7 +34,7 @@ router.get('/base/get', (req, res) => {
     res.json(req.query)
 })
 router.post('/base/post', (req, res) => {
-    res.json(req.query)
+    res.json(req.body)
 })
 router.post('/base/buffer', (req, res) => {
     let msg = []
@@ -45,6 +45,27 @@ router.post('/base/buffer', (req, res) => {
         let buf = Buffer.concat(msg)
         res.json(buf.toJSON())
     })
+})
+
+// 超时接口
+router.get('/error/timeout', (req, res) => {
+    setTimeout(() => {
+        res.json({
+            msg: 'hello world'
+        })
+    }, 3000)
+})
+
+// 请求错误
+router.get('/error/error', (req, res) => {
+    if (Math.random() > 0.5) {
+        res.json({
+            msg: 'hello world'
+        })
+    } else {
+        res.status(500)
+        res.end()
+    }
 })
 
 app.use(router)
